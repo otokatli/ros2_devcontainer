@@ -57,4 +57,5 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENV DEBIAN_FRONTEND=
+SHELL ["/bin/bash"]
 ENTRYPOINT ["/entrypoint.sh"]

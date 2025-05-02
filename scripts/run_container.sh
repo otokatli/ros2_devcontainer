@@ -16,6 +16,7 @@ fi
 pushd ${BASE_DIR}/ || exit 1
 SHARED_DIR=/home/ros_user/ros2_ws/src
 HOST_DIR=$BASE_DIR/src
+DOCKER_RUN_ARGS=""
 
 if [ ! -d $HOST_DIR ] && [ ! -f $HOST_DIR ] && [ -z $HOST_DIR ]; then
     echo "Error: Could not find ROS2 workspace: $HOST_DIR. Creating new workspace."
@@ -25,6 +26,25 @@ fi
 ROS_DISTRO="jazzy"
 BASE="full"
 
+
+# Get all arguments that are not flags (DOCKER_RUN_ARGS), that are in the form of --parameter-name
+I=0
+for arg in "$@"; do
+    if [[ $arg == --* ]]; then
+        DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} ${arg}"
+    fi
+done
+# Remove Docker build args from positional parameters
+POSITIONAL_ARGS=()
+while [[ $# -gt 0 ]]; do
+    if [[ $1 == --* ]]; then
+        shift
+    else
+        POSITIONAL_ARGS+=("$1")
+        shift
+    fi
+done
+set -- "${POSITIONAL_ARGS[@]}"
 
 while getopts d:p:t:g:r:h flag
 do
@@ -80,9 +100,12 @@ RUN_ARGS=(--rm \
 
 
 xhost +
+set -xv
 docker run -it \
     "${RUN_ARGS[@]}" \
+    ${DOCKER_RUN_ARGS} \
     --name "robotics-content-lab" \
     $IMAGE
-    xhost -
+set +xv
+xhost -
 popd || exit 1

@@ -29,4 +29,5 @@ RUN pip install --no-cache-dir -r /tmp/rquirements.txt || true
 WORKDIR ${ROS_WORKSPACE}/
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+SHELL ["/bin/bash"]
 ENTRYPOINT ["/entrypoint.sh"]
