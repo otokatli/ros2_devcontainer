@@ -99,13 +99,9 @@ RUN_ARGS=(--rm \
     )
 
 
-xhost +
-set -xv
 docker run -it \
     "${RUN_ARGS[@]}" \
     ${DOCKER_RUN_ARGS} \
     --name "robotics-content-lab" \
     $IMAGE
-set +xv
-xhost -
 popd || exit 1
