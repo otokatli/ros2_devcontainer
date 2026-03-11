@@ -9,6 +9,9 @@ ENV ROS_DISTRO=$ROS_DISTRO
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_WORKSPACE=/home/${USERNAME}/ros2_ws
 
+# For ignoring deprecation error due to the setuptools
+ENV PYTHONWARNINGS="ignore:setup.py install is deprecated::setuptools.command.install"
+
 # Set the shell to support the "source" command
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
